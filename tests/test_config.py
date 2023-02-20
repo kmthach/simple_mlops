@@ -16,3 +16,17 @@ def test_equal():
     a = 2
     b = 2
     assert a ==b 
+    
+    
+def wrapper(i):
+    i()
+    def new_hello(f):
+        f()
+        
+    def hi(f):
+        f()
+
+@wrapper
+def hello():
+    print('Hello')
+
