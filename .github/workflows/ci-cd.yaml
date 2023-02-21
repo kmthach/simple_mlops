@@ -27,3 +27,14 @@ jobs:
       - name: Test with pytest
         run: |
           pytest -v
+      - name: deploy to render
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_APP_ID: ${{ secrets.RENDER_APP_ID }}
+        if: github.ref == 'refs/heads/main' && job.status == 'success'
+        run: |
+          curl --request POST \
+          --url https://api.render.com/v1/services/$RENDER_APP_ID/deploys \
+          --header 'accept: application/json' \
+          --header 'authorization: Bearer $RENDER_API_KEY' \
+          --header 'content-type: application/json'
